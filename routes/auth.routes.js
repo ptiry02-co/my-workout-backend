@@ -12,6 +12,7 @@ const User = require('../models/User.model')
 
 // Require the jwt library
 const jwt = require('jsonwebtoken')
+const { isAuthenticated } = require('../middleware/jwt.middleware')
 
 router.post('/signup', async (req, res) => {
   const { username, email, password } = req.body
@@ -110,5 +111,9 @@ router.post('/login', async (req, res, next) => {
     next(err)
     // return res.status(500).render("login", { errorMessage: err.message });
   }
+})
+
+router.get('/verify', isAuthenticated, async (req, res, next) => {
+  res.status(200).json(req.payload)
 })
 module.exports = router
