@@ -66,7 +66,7 @@ router.post('/signup', async (req, res) => {
 })
 
 router.post('/login', async (req, res, next) => {
-  const { username, password } = req.body
+  const { ident, password } = req.body
 
   /* if (!username) {
     return res.status(400).json({ errorMessage: 'Please provide your username.' })
@@ -81,11 +81,14 @@ router.post('/login', async (req, res, next) => {
   }
   try {
     // Search the database for a user with the username submitted in the form
-    const user = await User.findOne({ username })
+    const userByName = await User.findOne({ username: ident })
+    const userByEmail = await User.findOne({ email: ident })
     // If the user isn't found, send the message that user provided wrong credentials
-    if (!user) {
+    if (!userByName && !userByEmail) {
       return res.status(400).json({ errorMessage: 'Incorrect username and/or password' })
     }
+
+    const user = userByName || userByEmail
 
     // If user is found based on the username, check if the in putted password matches the one saved in the database
     const isSamePassword = await bcrypt.compare(password, user.password)
@@ -93,7 +96,14 @@ router.post('/login', async (req, res, next) => {
     if (!isSamePassword) {
       return res.status(400).json({ errorMessage: 'Incorrect username and/or password' })
     }
-    return res.json(user)
+    // Create an object that will be set as the token payload
+    const payload = { id: user._id, email: user.email, username: user.username }
+
+    // Create and sign the token
+    const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, { algorithm: 'HS256', expiresIn: '6h' })
+
+    // Send the token as the response
+    res.status(200).json({ payload, authToken })
   } catch (err) {
     // in this case we are sending the error handling to the error handling middleware that is defined in the error handling file
     // you can just as easily run the res.status that is commented out below
@@ -101,9 +111,4 @@ router.post('/login', async (req, res, next) => {
     // return res.status(500).render("login", { errorMessage: err.message });
   }
 })
-/* 
-router.get('/logout', (req, res) => {
-  res.json({ message: 'Done' })
-})
- */
 module.exports = router
