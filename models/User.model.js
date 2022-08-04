@@ -4,11 +4,6 @@ const User = model(
   'User',
   new Schema(
     {
-      username: {
-        type: String,
-        unique: true,
-        required: [true, 'Please enter your username.'],
-      },
       email: {
         type: String,
         required: [true, 'Please provide an email.'],

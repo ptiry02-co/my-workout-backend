@@ -15,7 +15,7 @@ const jwt = require('jsonwebtoken')
 const { isAuthenticated } = require('../middleware/jwt.middleware')
 
 router.post('/signup', async (req, res) => {
-  const { username, email, password } = req.body
+  const { email, password } = req.body
 
   /*   if (!username) {
     return res.status(400).json({ errorMessage: 'Please provide a username.' })
@@ -28,10 +28,9 @@ router.post('/signup', async (req, res) => {
   }
   try {
     // Search the database for a user with the username submitted in the form
-    const foundUsername = await User.findOne({ username })
-    const foundEmail = await User.findOne({ email })
+    const found = await User.findOne({ email })
     // If the user is found, send the message username is taken
-    if (foundUsername || foundEmail) {
+    if (found) {
       return res.status(400).json({ errorMessage: 'Username and/or email already taken.' })
     }
 
@@ -40,13 +39,12 @@ router.post('/signup', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt)
     // Create a user and save it in the database
     const user = await User.create({
-      username,
       email,
       password: hashedPassword,
     })
 
     // Create an object that will be set as the token payload
-    const payload = { id: user._id, email: user.email, username: user.username }
+    const payload = { id: user._id, email: user.email }
 
     // Create and sign the token
     const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, { algorithm: 'HS256', expiresIn: '6h' })
@@ -67,7 +65,7 @@ router.post('/signup', async (req, res) => {
 })
 
 router.post('/login', async (req, res, next) => {
-  const { ident, password } = req.body
+  const { email, password } = req.body
 
   /* if (!username) {
     return res.status(400).json({ errorMessage: 'Please provide your username.' })
@@ -82,14 +80,11 @@ router.post('/login', async (req, res, next) => {
   }
   try {
     // Search the database for a user with the username submitted in the form
-    const userByName = await User.findOne({ username: ident })
-    const userByEmail = await User.findOne({ email: ident })
+    const user = await User.findOne({ email })
     // If the user isn't found, send the message that user provided wrong credentials
-    if (!userByName && !userByEmail) {
+    if (!user) {
       return res.status(400).json({ errorMessage: 'Incorrect username and/or password' })
     }
-
-    const user = userByName || userByEmail
 
     // If user is found based on the username, check if the in putted password matches the one saved in the database
     const isSamePassword = await bcrypt.compare(password, user.password)
@@ -98,7 +93,7 @@ router.post('/login', async (req, res, next) => {
       return res.status(400).json({ errorMessage: 'Incorrect username and/or password' })
     }
     // Create an object that will be set as the token payload
-    const payload = { id: user._id, email: user.email, username: user.username }
+    const payload = { id: user._id, email: user.email }
 
     // Create and sign the token
     const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, { algorithm: 'HS256', expiresIn: '6h' })
