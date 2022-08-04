@@ -8,11 +8,12 @@ const Plan = model(
       type: String,
       enum: ['upperBody', 'arms', 'core', 'back', 'legs', 'cardio', 'mix'],
     },
-    Day: {
+    description: String,
+    day: {
       type: String,
       enum: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     },
-    Exercises: {
+    exercises: {
       type: [Schema.Types.ObjectId],
       ref: 'Exercise',
     },
