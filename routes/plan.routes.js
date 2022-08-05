@@ -7,9 +7,9 @@ router.get('/', isAuthenticated, async (req, res, next) => {
   const { id } = req.payload
 
   try {
-    const userPlans = await Plan.find({ user: id })
-    const planTypes = await Plan.schema.path('type').caster.enumValues
-    const days = await Plan.schema.path('day').caster.enumValues
+    const userPlans = await Plan.find({ user: id }).populate('exercises')
+    const planTypes = Plan.schema.path('type').enumValues
+    const days = Plan.schema.path('day').enumValues
 
     res.json({ userPlans, planTypes, days })
   } catch (error) {
