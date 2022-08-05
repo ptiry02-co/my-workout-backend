@@ -11,10 +11,6 @@ const Exercise = model(
     },
     sets: Number,
     reps: Number,
-    plan: {
-      type: Schema.Types.ObjectId,
-      ref: 'Plan',
-    },
   })
 )
 module.exports = Exercise
