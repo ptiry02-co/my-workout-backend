@@ -5,10 +5,7 @@ const Exercise = model(
   new Schema({
     gif: String,
     name: String,
-    bodypart: {
-      type: String,
-      enum: ['upperBody', 'arms', 'core', 'back', 'legs', 'cardio'],
-    },
+    bodypart: String,
     sets: Number,
     reps: Number,
   })
