@@ -5,7 +5,7 @@ const Exercise = model(
   new Schema({
     gif: String,
     name: String,
-    bodypart: String,
+    bodyPart: String,
     sets: Number,
     reps: Number,
   })
