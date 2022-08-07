@@ -34,20 +34,12 @@ router.post('/signup', async (req, res) => {
     const salt = await bcrypt.genSalt(saltRounds)
     const hashedPassword = await bcrypt.hash(password, salt)
     // Create a user and save it in the database
-    const newUser = await User.create({
+    await User.create({
       email,
       password: hashedPassword,
     })
-    const user = await User.findById(newUser._id, { password: 0 })
 
-    // Create an object that will be set as the token payload
-    const payload = { id: user._id, email: user.email }
-
-    // Create and sign the token
-    const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, { algorithm: 'HS256', expiresIn: '6h' })
-
-    // Send the token as the response
-    res.status(200).json({ user, authToken })
+    res.redirect(308, '/api/auth/login')
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).json({ errorMessage: error.message })
