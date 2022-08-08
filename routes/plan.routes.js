@@ -17,7 +17,7 @@ router.get('/', isAuthenticated, async (req, res, next) => {
   }
 })
 
-router.post('/new', isAuthenticated, async (req, res, next) => {
+router.post('/', isAuthenticated, async (req, res, next) => {
   const { id } = req.payload
   const planData = req.body
 
