@@ -11,7 +11,7 @@ router.get('/', isAuthenticated, async (req, res, next) => {
     const planTypes = Plan.schema.path('type').enumValues
     const days = Plan.schema.path('day').enumValues
 
-    res.json({ userPlans, planTypes, days })
+    res.json({ userPlans, enums: { planTypes, days } })
   } catch (error) {
     console.log('Error fetching the plans: ', error)
   }
