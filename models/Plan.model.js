@@ -6,12 +6,12 @@ const Plan = model(
     name: String,
     type: {
       type: String,
-      enum: ['upperBody', 'arms', 'core', 'back', 'legs', 'cardio', 'mix'],
+      enum: ['Upper body', 'Arms', 'Core', 'Back', 'Legs', 'Cardio', 'Mix'],
     },
     description: String,
     day: {
       type: String,
-      enum: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
     },
     exercises: {
       type: [Schema.Types.ObjectId],
