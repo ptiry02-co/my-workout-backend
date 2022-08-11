@@ -20,7 +20,7 @@ router.post('/new', isAuthenticated, async (req, res, next) => {
   const exerciseData = req.body
 
   try {
-    const newExercise = await Exercise.create(exerciseData)
+    const newExercise = await Exercise.create(exerciseData.exercise)
     await Plan.findByIdAndUpdate(exerciseData.planId, { $push: { exercises: newExercise._id } })
 
     res.json(newExercise)
