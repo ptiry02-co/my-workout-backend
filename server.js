@@ -12,13 +12,15 @@ const cred = {
 }
 
 // ℹ️ Sets the PORT for our app to have access to it. If no env has been set, we hard code it to 5006
-/* const PORT = process.env.PORT || 80
+/* const HTTP_PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`)
 }) */
 
+const HTTPS_PORT = process.env.HTTPS_PORT
+
 const httpsServer = https.createServer(cred, app)
-httpsServer.listen(443, () => {
-  console.log(`Secure server listening on port: 443`)
+httpsServer.listen(HTTPS_PORT, () => {
+  console.log(`Secure server listening on port: ${HTTPS_PORT}`)
 })
