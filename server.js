@@ -14,7 +14,7 @@ const cred = {
 // ℹ️ Sets the PORT for our app to have access to it. If no env has been set, we hard code it to 5006
 const HTTP_PORT = process.env.HTTP_PORT || 8080
 
-app.listen(PORT, () => {
+app.listen(HTTP_PORT, () => {
   console.log(`Server listening on port: ${HTTP_PORT}`)
 })
 
