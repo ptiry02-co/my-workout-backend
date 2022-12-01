@@ -9,7 +9,7 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('http://13.39.13.247/.well-known/pki-validation/9F94B70D0B9965576B49A310172D996D.txt', (req, res) => {
-  res.sendFile('/Users/paultiry/Developer/aws/9F94B70D0B9965576B49A310172D996D.txt')
+  res.sendFile('/home/ubuntu/my-workout-backend/config/9F94B70D0B9965576B49A310172D996D.txt')
 })
 
 router.use('/api/auth', authRoutes)
