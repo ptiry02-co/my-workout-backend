@@ -8,7 +8,7 @@ router.get('/', async (req, res, next) => {
   res.send('API homepage for my-workout-planner.com')
 })
 
-router.use('/auth', authRoutes)
+router.use('/', authRoutes)
 router.use('/plans', planRoutes)
 router.use('/exercises', exerciseRoutes)
 
