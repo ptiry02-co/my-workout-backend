@@ -8,7 +8,11 @@ router.get('/', isAuthenticated, async (req, res, next) => {
   const { id } = req.payload
 
   try {
-    const { exercises } = await Plan.find({ user: id }).populate('exercises')
+    const plans = await Plan.find({ user: id }).populate('exercises')
+    const exercises = plans.map(p => {
+      if (!p.exercises[0]) return { plan: p.name, exercises: 'empty' }
+      return { plan: p.name, exercises: p.exercises }
+    })
 
     res.json(exercises)
   } catch (error) {
@@ -16,7 +20,7 @@ router.get('/', isAuthenticated, async (req, res, next) => {
   }
 })
 
-router.post('/new', isAuthenticated, async (req, res, next) => {
+router.post('/', isAuthenticated, async (req, res, next) => {
   const exerciseData = req.body
 
   try {

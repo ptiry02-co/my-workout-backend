@@ -5,7 +5,7 @@ const exerciseRoutes = require('./exercise.routes')
 
 /* GET home page */
 router.get('/', async (req, res, next) => {
-  res.json('All good in here')
+  res.send('API homepage for my-workout-planner.com')
 })
 
 router.use('/auth', authRoutes)
