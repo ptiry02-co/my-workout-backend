@@ -4,12 +4,10 @@ const User = model(
   'User',
   new Schema(
     {
-      email: {
+      username: {
         type: String,
-        required: [true, 'Please provide an email.'],
-        match: /^\S+@\S+\.\S+$/,
+        required: [true, 'Please provide a name or username.'],
         trim: true,
-        unique: [true, 'Email is already in use.'],
         lowerCase: true,
       },
       password: {

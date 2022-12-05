@@ -15,7 +15,7 @@ const jwt = require('jsonwebtoken')
 const { isAuthenticated } = require('../middleware/jwt.middleware')
 
 router.post('/signup', async (req, res) => {
-  const { email, password } = req.body
+  const { username, password } = req.body
 
   if (password.length < 6) {
     return res.status(400).json({
@@ -23,19 +23,20 @@ router.post('/signup', async (req, res) => {
     })
   }
   try {
-    // Search the database for a user with the email submitted in the form
+    /* // Search the database for a user with the email submitted in the form
     const found = await User.findOne({ email })
+
     // If the user is found, send the message email is taken
     if (found) {
       return res.status(400).json({ errorMessage: 'User allready exists.' })
-    }
+    } */
 
-    // if user is not found, create a new user - start with hashing the password
+    // create a new user - start with hashing the password
     const salt = await bcrypt.genSalt(saltRounds)
     const hashedPassword = await bcrypt.hash(password, salt)
     // Create a user and save it in the database
     await User.create({
-      email,
+      username,
       password: hashedPassword,
     })
 
@@ -55,7 +56,7 @@ router.post('/signup', async (req, res) => {
 })
 
 router.post('/login', async (req, res, next) => {
-  const { email, password } = req.body
+  const { username, password } = req.body
 
   // Here we use the same logic as above
   // - either length based parameters or we check the strength of a password
@@ -66,7 +67,7 @@ router.post('/login', async (req, res, next) => {
   }
   try {
     // Search the database for a user with the username submitted in the form
-    const checkUser = await User.findOne({ email })
+    const checkUser = await User.findOne({ username })
     // If the user isn't found, send the message that user provided wrong credentials
     if (!checkUser) {
       return res.status(400).json({ errorMessage: 'Incorrect username and/or password' })
@@ -79,7 +80,7 @@ router.post('/login', async (req, res, next) => {
       return res.status(400).json({ errorMessage: 'Incorrect username and/or password' })
     }
     // Create an object that will be set as the token payload
-    const payload = { id: checkUser._id, email: checkUser.email }
+    const payload = { id: checkUser._id, username: checkUser.email }
 
     // Create and sign the token
     const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, { algorithm: 'HS256', expiresIn: '6h' })

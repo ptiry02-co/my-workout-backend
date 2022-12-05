@@ -68,13 +68,13 @@ To run locally...
         <tr>
             <td rowspan=4>POST</td>
             <td>/signup</td>
-            <td>email & password</td>
+            <td>username & password</td>
             <td>none</td>
             <td>Sign in a new user</td>
         </tr>
         <tr>
             <td>/login</td>
-            <td>email & password</td>
+            <td>username & password</td>
             <td>none</td>
             <td>Log in User</td>
         </tr>
