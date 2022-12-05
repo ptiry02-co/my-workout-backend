@@ -40,7 +40,7 @@ router.post('/signup', async (req, res) => {
       password: hashedPassword,
     })
 
-    res.redirect(308, '/auth/login')
+    res.redirect(308, '/login')
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).json({ errorMessage: error.message })
