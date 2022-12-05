@@ -7,3 +7,7 @@ npm-debug.log
 
 # Environment Variables should NEVER be published
 .env
+
+# https cert and key
+/config/certificate.crt
+/config/private.key
