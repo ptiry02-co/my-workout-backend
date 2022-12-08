@@ -23,13 +23,8 @@ router.post('/signup', async (req, res) => {
     })
   }
   try {
-    /* // Search the database for a user with the email submitted in the form
-    const found = await User.findOne({ email })
-
-    // If the user is found, send the message email is taken
-    if (found) {
-      return res.status(400).json({ errorMessage: 'User allready exists.' })
-    } */
+    // Search the database for a user with the email submitted in the form
+    await User.findOne({ username })
 
     // create a new user - start with hashing the password
     const salt = await bcrypt.genSalt(saltRounds)
@@ -43,15 +38,14 @@ router.post('/signup', async (req, res) => {
     res.redirect(308, '/login')
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      return res.status(400).json({ errorMessage: error.message })
+      return res.status(400).json(error)
     }
     if (error.code === 11000) {
-      return res.status(400).json({
-        errorMessage: 'Username need to be unique. The username you chose is already in use.',
-        error,
-      })
+      return res
+        .status(400)
+        .json({ ...error, message: `${error.keyValue.username} is already in use, please try again.` })
     }
-    return res.status(500).json({ errorMessage: error.message })
+    return res.status(500).json(error)
   }
 })
 

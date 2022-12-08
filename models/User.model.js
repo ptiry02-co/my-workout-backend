@@ -6,6 +6,7 @@ const User = model(
     {
       username: {
         type: String,
+        unique: true,
         required: [true, 'Please provide a name or username.'],
         trim: true,
         lowerCase: true,
